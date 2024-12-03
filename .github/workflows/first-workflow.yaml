@@ -11,6 +11,6 @@ jobs:
         - name: Welcome message
           run: echo "my first workflow"
         - name: list files
-          run: ls
+          run: ls -a
         - name: read file
           run: cat README.md
