@@ -27,3 +27,5 @@ jobs:
           run: ls -a
         - name: read file
           run: cat README.md
+        - name: disabled workflow
+          run: echo "disabled workflow"
