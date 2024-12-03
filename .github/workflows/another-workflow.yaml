@@ -13,19 +13,21 @@ jobs:
            echo "my first workflow"
            ls -ltra
            cat README.md
-        - name: installing cowsay
-          run: sudo apt-get install cowsay -y 
-        - name: cowasy command used for ascii artwork
-          run: cowsay -f dragon "run for cover , Iam a dragon ...." >> dragon.txt
-        - name: file present or not
-          run: grep -i "dragon" dragon.txt
-        - name: list files
-          run: ls -ltra
-        - name: reading dragon.txt
-          run: cat dragon.txt
-        - name: list files
-          run: ls -a
-        - name: read file
-          run: cat README.md
-        - name: disabled workflow
-          run: echo "disabled workflow"
+        - name: executing shell-script
+          run: |
+            chmod +x shell-script.sh
+            ./shell-script.sh 
+        # - name: cowasy command used for ascii artwork
+        #   run: cowsay -f dragon "run for cover , Iam a dragon ...." >> dragon.txt
+        # - name: file present or not
+        #   run: grep -i "dragon" dragon.txt
+        # - name: list files
+        #   run: ls -ltra
+        # - name: reading dragon.txt
+        #   run: cat dragon.txt
+        # - name: list files
+        #   run: ls -a
+        # - name: read file
+        #   run: cat README.md
+        # - name: disabled workflow
+        #   run: echo "disabled workflow"
