@@ -21,6 +21,8 @@ jobs:
           run: grep -i "dragon" dragon.txt
         - name: list files
           run: ls -ltra
+        - name: reading dragon.txt
+          run: cat dragon.txt
         # - name: list files
         #   run: ls -a
         # - name: read file
