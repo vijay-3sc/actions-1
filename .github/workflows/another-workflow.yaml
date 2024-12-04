@@ -1,60 +1,84 @@
-name: my first workflow
+# name: my first workflow
+
+# on: push
+
+# jobs:
+#     build_job:
+#       runs-on: ubuntu-latest
+#       steps:
+#       - name: install cowsay 
+#         run: sudo apt-get install cowsay -y
+#       - name: execute cowsay command
+#         run: cowsay -f dragon "run for a cover ,I am a DRAGON .... RAWR " >>dragon.txt
+#       - name: upload dragon text file
+#         uses: actions/upload-artifact@v4
+#         with:
+#         # Name of the artifact to upload.
+#         # Optional. Default is 'artifact'
+#           name: dragon-text-file
+
+#         # A file, directory or wildcard pattern that describes what to upload
+#         # Required.
+#           path: dragon.txt
+        
+#     test_job:
+#       runs-on: ubuntu-latest
+#       needs: build_job
+#       steps:
+#       - name: downloading dragon text file
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: dragon-text-file
+#       - name: test file exists
+#         run: grep -i "dragon" dragon.txt
+#     deploy_job:
+#       runs-on: ubuntu-latest
+#       needs: test_job
+#       steps:
+#       - name: downloading dragon text file
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: dragon-text-file
+#       - name: read file
+#         run: cat dragon.txt
+#       - name: deploying
+#         run: echo deploying ....
+       
+#         # - name: cowasy command used for ascii artwork
+#         #   run: cowsay -f dragon "run for cover , Iam a dragon ...." >> dragon.txt
+#         # - name: file present or not
+#         #   run: grep -i "dragon" dragon.txt
+#         # - name: list files
+#         #   run: ls -ltra
+#         # - name: reading dragon.txt
+#         #   run: cat dragon.txt
+#         # - name: list files
+#         #   run: ls -a
+#         # - name: read file
+#         #   run: cat README.md
+#         # - name: disabled workflow
+#         #   run: echo "disabled workflow"
+name: exploring variables and secrets
 
 on: push
 
-jobs:
-    build_job:
-      runs-on: ubuntu-latest
-      steps:
-      - name: install cowsay 
-        run: sudo apt-get install cowsay -y
-      - name: execute cowsay command
-        run: cowsay -f dragon "run for a cover ,I am a DRAGON .... RAWR " >>dragon.txt
-      - name: upload dragon text file
-        uses: actions/upload-artifact@v4
-        with:
-        # Name of the artifact to upload.
-        # Optional. Default is 'artifact'
-          name: dragon-text-file
+env:
+     CONTAINER_REGISTRY: docker.io
+     IMAGE_NAME: github-actions-nginx
 
-        # A file, directory or wildcard pattern that describes what to upload
-        # Required.
-          path: dragon.txt
-        
-    test_job:
-      runs-on: ubuntu-latest
-      needs: build_job
-      steps:
-      - name: downloading dragon text file
-        uses: actions/download-artifact@v4
-        with:
-          name: dragon-text-file
-      - name: test file exists
-        run: grep -i "dragon" dragon.txt
-    deploy_job:
-      runs-on: ubuntu-latest
-      needs: test_job
-      steps:
-      - name: downloading dragon text file
-        uses: actions/download-artifact@v4
-        with:
-          name: dragon-text-file
-      - name: read file
-        run: cat dragon.txt
-      - name: deploying
-        run: echo deploying ....
-       
-        # - name: cowasy command used for ascii artwork
-        #   run: cowsay -f dragon "run for cover , Iam a dragon ...." >> dragon.txt
-        # - name: file present or not
-        #   run: grep -i "dragon" dragon.txt
-        # - name: list files
-        #   run: ls -ltra
-        # - name: reading dragon.txt
-        #   run: cat dragon.txt
-        # - name: list files
-        #   run: ls -a
-        # - name: read file
-        #   run: cat README.md
-        # - name: disabled workflow
-        #   run: echo "disabled workflow"
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: docker build
+      run: echo docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+    - name: docker login
+      run: echo docker login --username=${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+    - name: docker push
+      run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+    - name: run docker
+      run: echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
