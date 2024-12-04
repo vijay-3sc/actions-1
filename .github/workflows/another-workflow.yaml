@@ -64,7 +64,7 @@ on: push
 
 env:
      CONTAINER_REGISTRY: docker.io
-     IMAGE_NAME: github-actions-nginx
+     IMAGE_NAME: nginx
 
 jobs:
   docker:
