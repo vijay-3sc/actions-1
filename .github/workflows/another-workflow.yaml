@@ -3,20 +3,31 @@ name: my first workflow
 on: push
 
 jobs:
-    first_job:
-        runs-on: ubuntu-latest
-        steps:
-        - name: checkout
-          uses: actions/checkout@v4
-        - name: Welcome message
-          run: |
-           echo "my first workflow"
-           ls -ltra
-           cat README.md
-        - name: executing shell-script
-          run: |
-            chmod +x shell-script.sh
-            ./shell-script.sh 
+    build_job:
+      runs-on: ubuntu-latest
+      steps:
+      - name: install cowsay 
+        run: sudo apt-get install cowsay -y
+      - name: execute cowsay command
+        run: cowsay -f dragon "run for a cover ,I am a dragon ..." >> dragon.txt
+      - name: sleep for 30 sec
+        run: sleep 30
+        
+    test_job:
+      runs-on: ubuntu-latest
+      steps:
+      - name: sleeping for 10 sec
+        run: sleep 10
+      - name: test file exists
+        run: grep -i "dragon" dragon.txt
+    deploy_job:
+      runs-on: ubuntu-latest
+      steps:
+      - name: read file
+        run: cat dragon.txt
+      - name: deploying
+        run: echo deploying ....
+       
         # - name: cowasy command used for ascii artwork
         #   run: cowsay -f dragon "run for cover , Iam a dragon ...." >> dragon.txt
         # - name: file present or not
