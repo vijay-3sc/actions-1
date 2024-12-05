@@ -89,6 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: run docker
-      run: echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
-    - name: sleep
-      run: echo sleep 600s 
+      timeout-minutes: 1
+      run: |
+        echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+        sleep 600s
