@@ -91,4 +91,4 @@ jobs:
     - name: run docker
       run: echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
     - name: sleep
-      run: echo sleep 600 
+      run: echo sleep 300 
