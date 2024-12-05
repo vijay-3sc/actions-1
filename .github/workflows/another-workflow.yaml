@@ -61,8 +61,9 @@
 name: exploring variables and secrets
 
 on: 
-   schedule:
-      - cron: "*/1 * * * *"
+  #  schedule:
+  #     - cron: "*/1 * * * *"
+    workflow_dispatch:
 
 env:
      CONTAINER_REGISTRY: docker.io
